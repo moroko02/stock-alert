@@ -17,7 +17,7 @@ PRODUCT_URL = "https://www.gens-du-monde.com/products/morocco-white-knit"
 TAILLE_VOULUE = ""
 
 # Mets True pour forcer un email de TEST, puis remets False apres.
-TEST_MODE = True
+TEST_MODE = False
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
 
