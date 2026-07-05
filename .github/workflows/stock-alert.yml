@@ -1,0 +1,29 @@
+name: Stock Alert
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # toutes les 5 minutes (minimum GitHub)
+  workflow_dispatch:         # permet de lancer un test manuel
+
+permissions:
+  actions: write             # nécessaire pour l'auto-désactivation
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check stock
+        id: stock
+        env:
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: python3 check_stock.py
+
+      - name: Stop monitoring after alert
+        if: steps.stock.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow disable "Stock Alert" --repo ${{ github.repository }}
